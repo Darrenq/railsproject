@@ -25,5 +25,12 @@
   <%= @patient.illness %>
 </p>
 
-<%= link_to 'Edit', edit_patient_path(@patient) %> |
+<h4>Enter the patient's symptoms or illness</h4>
+<h8>Only key words. Etc. Heart, Brain, Spine</h8>
+        <%= form_tag ("/validate") do %>
+        <%= text_field_tag :suggest %>
+        <%= submit_tag "Priority" %>
+        <% end %>
+
+<%= link_to 'Edit', edit_patient_path(@patient) %> 
 <%= link_to 'Back', patients_path %>

@@ -1,0 +1,13 @@
+<% if user_signed_in? %>
+<h1>Dr. <%= @user.firstname %> <%= @user.lastname %></h1>
+
+</br>
+</br>
+<h3>Patient list</h3>
+<% @user_patients.each do |patient| %>
+    <%= link_to patient.firstname+' '+patient.lastname, patient_path(patient) %></br>
+<% end %>
+
+<% else %>
+<h3>Please login to continue.</h3>
+<% end %>
