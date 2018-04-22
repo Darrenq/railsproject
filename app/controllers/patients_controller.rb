@@ -5,6 +5,11 @@ class PatientsController < ApplicationController
   # GET /patients.json
   def index
     @patients = Patient.all
+    if params[:search]
+      @patients = Patient.search(params[:search]).order("created_at DESC")
+    else
+      @patients = Patient.all.order("created_at DESC")
+    end
   end
 
   # GET /patients/1
@@ -14,7 +19,7 @@ class PatientsController < ApplicationController
 
   # GET /patients/new
   def new
-    @patient = Patient.new
+    @patient = current_user.patients.build
   end
 
   # GET /patients/1/edit
@@ -24,7 +29,7 @@ class PatientsController < ApplicationController
   # POST /patients
   # POST /patients.json
   def create
-    @patient = Patient.new(patient_params)
+    @patient = current_user.patients.build(patient_params)
 
     respond_to do |format|
       if @patient.save
@@ -59,6 +64,15 @@ class PatientsController < ApplicationController
       format.html { redirect_to patients_url, notice: 'Patient was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+  
+  #Shows priority rating from custom gem
+  def indicate
+     @input1 = params[:suggest]
+     @result = Checker.runcheck(@input1)
+     flash[:notice] = @result
+     redirect_to request.referrer
+     
   end
 
   private

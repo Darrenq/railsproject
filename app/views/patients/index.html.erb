@@ -1,12 +1,14 @@
 <p id="notice"><%= notice %></p>
 
+<% if user_signed_in? %>
+
 <h1>Patients</h1>
 
-<table>
+<table class=table>
   <thead>
     <tr>
-      <th>Firstname</th>
-      <th>Lastname</th>
+      <th>First Name</th>
+      <th>Last Name</th>
       <th>Address</th>
       <th>Dob</th>
       <th>Illness</th>
@@ -22,14 +24,22 @@
         <td><%= patient.address %></td>
         <td><%= patient.dob %></td>
         <td><%= patient.illness %></td>
-        <td><%= link_to 'Show', patient %></td>
+        <td><%= link_to 'Show', patient, class: 'link' %></td>
         <td><%= link_to 'Edit', edit_patient_path(patient) %></td>
         <td><%= link_to 'Destroy', patient, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        
       </tr>
     <% end %>
   </tbody>
 </table>
+<% else %>
+<h3>Welcome to the GP Patient App.</h3>
+<h5>Please login to view the patient list.</h5>
+<% end %>
 
 <br>
-
+<% if user_signed_in? %>
 <%= link_to 'New Patient', new_patient_path %>
+<% else %>
+
+<% end %>

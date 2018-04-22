@@ -1,19 +1,79 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Project</title>
+    <title>Patient App</title>
     <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= favicon_link_tag 'favicon.ico' %>
   </head>
 
   <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">GP system</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
     
-  <p class="notice"><%= notice %></p>
-  <p class="alert"><%= alert %></p>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <%if user_signed_in? %>
+          <li class="nav-item">
+            <a class="nav-link" href="/patients/">Patients <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/meetings">Create an Appointment</a>
+          </li>
+          <li class="nav-item">
+            <%if user_signed_in? %>
+              <a class="nav-link" <%= link_to "Profile", user_path(current_user),{ :class => "link"}%> </a>
+            <% else %>
+              <a class="nav-link">
+                User
+              </a> 
+            <% end %>
+          </li>
+          <% end %>
+          <% if user_signed_in? %>
+           <a class="nav-link" href="/users/edit">
+           <li class = "edit"
+           <%= link_to('Edit User', edit_user_registration_path) %>
+           </li>
+          <% else %>
+           <a class="nav-link" href="/users/sign_up">
+           <li
+           <%= link_to('Register', new_user_registration_path) %>
+           </li>
+          <% end %> 
+          <% if user_signed_in? %>
+           <a class="nav-link"
+           <%= link_to('Logout', destroy_user_session_path, :method => :delete ) %>
+           </li>
+          <% else %>
+           <a class="nav-link" href="/users/sign_in">
+           <li
+           <%= link_to('Login', new_user_registration_path) %>
+           </li>
+          <% end %>
+          <% if user_signed_in? %>
+          <li class ="search-bar">
+            <%= form_tag(patients_path, :method => "get", id: "search-form") do %>
+            <%= text_field_tag :search, params[:search], placeholder: "Search by Lastname" %>
+            <%= submit_tag "Search" %>
+          </li>
+          <% end %>
+        </ul>
+        <% end %>
+        
+      </div>
+    </nav>
     
-    <%= yield %>
+    <div class = "container">
+      <div class ="row">
+        <div class = "col-sm-8">
+          
+          <%= yield %>
+        
   </body>
 </html>
